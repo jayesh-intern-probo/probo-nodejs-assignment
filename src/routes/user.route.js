@@ -8,10 +8,10 @@ const {
 const router = require('express').Router()
 const { checkToken } = require('../../auth/tokenValidation')
 
-router.post("/createUser",  handleCreateUserRequest)
-router.get("/getUserList",handleGetUserListRequest)
-router.patch("/updateUser",handleUpdateUserRequest)
-router.delete("/deleteUser/:email",handleDeleteUserRequest)
+router.post("/createUser", checkToken, handleCreateUserRequest)
+router.get("/getUserList", checkToken, handleGetUserListRequest)
+router.patch("/updateUser", checkToken, handleUpdateUserRequest)
+router.delete("/deleteUser/:email", checkToken, handleDeleteUserRequest)
 router.post("/login", loginController)
 
 module.exports = router
