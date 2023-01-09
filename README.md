@@ -1,6 +1,30 @@
 # probo-nodejs-assignment
 CRUD APIs
 
+SCHEMA
+------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE `users` (
+
+  `first_name` varchar(255) NOT NULL,
+
+  `last_name` varchar(255) NOT NULL,
+
+  `email` varchar(255) NOT NULL,
+  
+  `password` varchar(255) NOT NULL,
+  
+  `mobile` varchar(10) NOT NULL,
+  
+  `img` varchar(50) DEFAULT NULL,
+  
+  PRIMARY KEY (`email`)
+  
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+------------------------------------------------------------------------------------------------------------------
+
 LOGIN API(GENERATES TOKEN IF CORRECT INFORMATION PASSED)
 ![image](https://user-images.githubusercontent.com/121883415/211260674-b3623b24-3666-4b8b-9db6-b1515657302a.png)
 
