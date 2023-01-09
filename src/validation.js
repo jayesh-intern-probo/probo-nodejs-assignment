@@ -30,5 +30,14 @@ module.exports = {
     validateFullSet: (body) => {
         return (this.validateMobile(body.mobile) && this.validateEmail(body.email) && 
                 this.validateName(body.first_name, body.last_name))
+    },
+
+    allFieldsPresent: (body) => {
+        return (body.first_name && body.last_name &&
+             body.email && body.password && body.mobile)
+    },
+
+    partialFieldsPresent: (body) => {
+        return (body.email && body.password)
     }
 }

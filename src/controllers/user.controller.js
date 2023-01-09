@@ -6,7 +6,12 @@ const {
     getUserByEmail 
 } = require('../models/user.model')
 
-const { validateEmail, validateFullSet } = require('../validation')
+const { 
+    validateEmail, 
+    validateFullSet,
+    allFieldsPresent,
+    partialFieldsPresent 
+} = require('../validation')
 
 const { genSaltSync, hashSync, compareSync } = require('bcrypt')
 const { sign } = require('jsonwebtoken')
@@ -15,6 +20,14 @@ module.exports = {
     handleCreateUserRequest: (request, response) => {
         try {
             const body = request.body
+
+            if(!allFieldsPresent(body)) {
+                return response.status(400).json({
+                    success: 0,
+                    message: 'Please Fill All Fields'
+                })
+            }
+
             const salt = genSaltSync(10)
             body.password = hashSync(body.password, salt)
 
@@ -78,6 +91,14 @@ module.exports = {
     handleUpdateUserRequest: (request, response) => {
         try {
             const body = request.body
+            
+            if(!allFieldsPresent(body)) {
+                return response.status(400).json({
+                    success: 0,
+                    message: 'Please Fill All Fields'
+                })
+            }
+            
             const salt = genSaltSync(10)
             body.password = hashSync(body.password, salt)
 
@@ -158,6 +179,14 @@ module.exports = {
 
     loginController: (request, response) => {
         try {
+
+            if(!partialFieldsPresent(request.body)) {
+                return response.status(400).json({
+                    success: 0,
+                    message: 'Please Fill All Fields'
+                })
+            }
+
             if(!validateEmail(request.params.email)) {
                 return response.status(400).json({
                     success: 0,
