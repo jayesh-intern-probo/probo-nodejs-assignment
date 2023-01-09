@@ -8,7 +8,8 @@ const {
 
 const { 
     validateEmail, 
-    validateFullSet,
+    validateName,
+    validateMobile,
     allFieldsPresent,
     partialFieldsPresent 
 } = require('../validation')
@@ -31,7 +32,8 @@ module.exports = {
             const salt = genSaltSync(10)
             body.password = hashSync(body.password, salt)
 
-            if(!validateFullSet(body)) {
+            if((validateMobile(body.mobile) && validateEmail(body.email) && 
+                validateName(body.first_name, body.last_name))) {
                 return response.status(400).json({
                     success: 0,
                     message: 'Invalid Format'
@@ -102,7 +104,8 @@ module.exports = {
             const salt = genSaltSync(10)
             body.password = hashSync(body.password, salt)
 
-            if(!validateFullSet(body)) {
+            if((validateMobile(body.mobile) && validateEmail(body.email) && 
+                validateName(body.first_name, body.last_name))) {
                 return response.status(400).json({
                     success: 0,
                     message: 'Invalid Format'
@@ -187,7 +190,7 @@ module.exports = {
                 })
             }
 
-            if(!validateEmail(request.params.email)) {
+            if(!validateEmail(request.body.email)) {
                 return response.status(400).json({
                     success: 0,
                     message: 'Invalid Email Format'
