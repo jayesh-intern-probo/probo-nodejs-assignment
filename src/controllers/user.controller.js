@@ -6,6 +6,8 @@ const {
     getUserByEmail 
 } = require('../models/user.model')
 
+const { validateEmail, validateFullSet } = require('../validation')
+
 const { genSaltSync, hashSync, compareSync } = require('bcrypt')
 const { sign } = require('jsonwebtoken')
 
@@ -16,6 +18,13 @@ module.exports = {
             const salt = genSaltSync(10)
             body.password = hashSync(body.password, salt)
 
+            if(!validateFullSet(body)) {
+                return response.status(400).json({
+                    success: 0,
+                    message: 'Invalid Format'
+                })
+            }
+            
             createUser(body, (error, results) => {
                 if(error) {
                     console.log(error)
@@ -29,7 +38,8 @@ module.exports = {
                     data: results,
                     message: 'User Creation Successful'
                 })
-        })}
+            })
+        }
         catch(error) {
             console.log(error)
             response.status(500).json({
@@ -70,6 +80,14 @@ module.exports = {
             const body = request.body
             const salt = genSaltSync(10)
             body.password = hashSync(body.password, salt)
+
+            if(!validateFullSet(body)) {
+                return response.status(400).json({
+                    success: 0,
+                    message: 'Invalid Format'
+                })
+            }
+
             updateUser(body, (error, results)=> {
                 if(error) {
                     console.log(error)
@@ -102,6 +120,13 @@ module.exports = {
 
     handleDeleteUserRequest: (request, response) => {
         try {
+            if(!validateEmail(request.params.email)) {
+                return response.status(400).json({
+                    success: 0,
+                    message: 'Invalid Email Format'
+                })
+            }
+
             deleteUser(request.params.email, (error, results)=>{
                 if(error) {
                     console.log(error)
@@ -133,6 +158,13 @@ module.exports = {
 
     loginController: (request, response) => {
         try {
+            if(!validateEmail(request.params.email)) {
+                return response.status(400).json({
+                    success: 0,
+                    message: 'Invalid Email Format'
+                })
+            }
+
             const body = request.body
             getUserByEmail(body.email, (error, results)=> {
                 if(error) {
